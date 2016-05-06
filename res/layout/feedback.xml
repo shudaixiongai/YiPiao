@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_marginBottom="10dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:orientation="vertical" >
+
+    <EditText
+        android:id="@+id/et_feedback_phone"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp"
+        android:hint="请输入联系方式"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/et_feedback_content"
+        android:layout_width="fill_parent"
+        android:layout_height="288dp"
+        android:layout_below="@id/et_feedback_phone"
+        android:layout_marginTop="20dp"
+        android:gravity="left"
+        android:hint="反馈内容"
+        android:textSize="14sp" />
+
+    <Button
+        android:id="@+id/btn_feedback_ok"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/shape"
+        android:text="提       交"
+        android:textColor="#fff"
+        android:textSize="15sp" />
+
+</RelativeLayout>
