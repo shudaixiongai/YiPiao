@@ -8,8 +8,10 @@ import cn.bmob.v3.listener.FindListener;
 
 import com.bmob.btp.e.a.in;
 import com.example.been.InBeen;
+import com.example.yipiao.ItemActivity;
 import com.example.yipiao.R;
 
+import android.R.drawable;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,17 +35,20 @@ public class HomeFragment extends Fragment {
 	int int1, int2, int3;
 	int sum, sum2, sum3;
 	private static final int REQUESTCODE = 1;
+	String vote_name;
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.viewpager_home, container, false);
+
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
+		Bundle bundle = getArguments();
+		vote_name = bundle.getString("get_name");
 		initView();
 	}
 
@@ -85,81 +90,66 @@ public class HomeFragment extends Fragment {
 				arg1 = inflater.inflate(R.layout.out_item, null);
 				// viewholder.iv_title = (ImageView) arg1
 				// .findViewById(R.id.iv_head);
-				viewholder.username = (TextView) arg1
-						.findViewById(R.id.tv_vote_title);
-				viewholder.password = (TextView) arg1
-						.findViewById(R.id.tv_vote_title2);
-				viewholder.content = (TextView) arg1
-						.findViewById(R.id.tv_vote_content);
+				viewholder.iv_title = (ImageView) arg1.findViewById(R.id.iv_head);
+				viewholder.name = (TextView) arg1.findViewById(R.id.tv_vote_username);
+				viewholder.time = (TextView) arg1.findViewById(R.id.tv_vote_time);
+				viewholder.content = (TextView) arg1.findViewById(R.id.tv_vote_content);
+				viewholder.title = (TextView) arg1.findViewById(R.id.tv_vote_option1);
 				arg1.setTag(viewholder);
 			} else {
 				viewholder = (Viewholder) arg1.getTag();
 			}
-			// for (int i = 0; i < lists.size(); i++) {
-			// String title = lists.get(i).getTitle();
-			// Log.i("lists.gettitle", title);
-			// }
+
+			String time = listsBeens.get(arg0).getTime();
 			String title = listsBeens.get(arg0).getTitle();
-			viewholder.content.setText(title);
-			// viewholder.iv_title.setBackgroundDrawable(drawable.ic_launcher);
+			String explain = listsBeens.get(arg0).getExplain();
+			viewholder.content.setText(explain);
+			viewholder.time.setText(time);
+			viewholder.title.setText(title);
+			viewholder.iv_title.setBackgroundResource(R.drawable.user_default_icon);
+			viewholder.name.setText(vote_name);
 			return arg1;
 		}
 
 	}
 
 	private class Viewholder {
-		private TextView username;
+		private TextView title;
 		private TextView password;
 		private TextView content;
+		private TextView name;
 		private ImageView iv_title;
+		private TextView time;
 
 	}
 
 	private void Queryout() {
 		BmobQuery<InBeen> query = new BmobQuery<InBeen>();
 		query.order("-createdAt");
-		query.findObjects(getActivity(),
-				new FindListener<InBeen>() {
+		query.findObjects(getActivity(), new FindListener<InBeen>() {
+			@Override
+			public void onSuccess(List<InBeen> arg0) {
+				final List<InBeen> lists = arg0;
+				for (int i = 0; i < arg0.size(); i++) {
+					Log.i("arg0", "log" + arg0.get(i).getTitle());
+				}
+				listView.setAdapter(new adapter(getActivity(), lists));
+				listView.setOnItemClickListener(new OnItemClickListener() {
 					@Override
-					public void onSuccess(List<InBeen> arg0) {
-						final List<InBeen> lists = arg0;
-						for (int i = 0; i < arg0.size(); i++) {
-							Log.i("arg0", "log" + arg0.get(i).getTitle());
-						}
-						listView.setAdapter(new adapter(getActivity(), lists));
-						listView.setOnItemClickListener(new OnItemClickListener() {
-							@Override
-							public void onItemClick(AdapterView<?> arg0,
-									View arg1, int arg2, long arg3) {
-								// Register register = new Register();
-								// // if
-								// //
-								// (lists.get(arg2).equals(register.getRegister_name()))
-								// // {
-								// Intent intent = new Intent(getActivity(),
-								// DetailsActivity.class);
-								// Bundle bundle = new Bundle();
-								// bundle.putInt("postion", arg2);
-								// intent.putExtra("list", (Serializable)
-								// lists);
-								// intent.putExtra("intent", int1);
-								// intent.putExtra("intent2", int2);
-								// intent.putExtra("intent3", int3);
-								// intent.putExtra("sum", sum);
-								// Log.v("绗竴涓猘ctivity鐨刬nt鍊�",
-								// String.valueOf(int1));
-								// intent.putExtras(bundle);
-								// startActivityForResult(intent, REQUESTCODE);
-								// }
-							}
-						});
-					}
-
-					@Override
-					public void onError(int arg0, String arg1) {
-						Toast.makeText(getActivity(), "网络错误", 1).show();
+					public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+						Intent intent = new Intent();
+						intent.putExtra("postion", arg2);
+						intent.setClass(getActivity(), ItemActivity.class);
+						startActivity(intent);
 					}
 				});
+			}
+
+			@Override
+			public void onError(int arg0, String arg1) {
+				Toast.makeText(getActivity(), "网络错误", 1).show();
+			}
+		});
 
 	}
 }

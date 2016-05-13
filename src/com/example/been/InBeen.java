@@ -5,13 +5,23 @@ import java.util.List;
 
 import cn.bmob.v3.BmobObject;
 
-public class InBeen extends BmobObject implements Serializable{
+public class InBeen extends BmobObject implements Serializable {
 	private String title;
 	private String option_one;
 	private String option_two;
 	private String option_three;
 	private String explain;
 	private List<InBeen> beens;
+	private String time;
+	
+
+	public String getTime() {
+		return time;
+	}
+
+	public void setTime(String time) {
+		this.time = time;
+	}
 
 	public List<InBeen> getBeens() {
 		return beens;

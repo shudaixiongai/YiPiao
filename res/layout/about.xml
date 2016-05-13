@@ -72,6 +72,7 @@
         android:background="#A1A1A1" />
 
     <RelativeLayout
+        android:id="@+id/rl_about_share"
         android:layout_width="fill_parent"
         android:layout_height="50dp"
         android:background="#fff"

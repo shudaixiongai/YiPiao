@@ -5,7 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.example.piao.fragment.AboutActivity;
+import javax.xml.transform.sax.SAXResult;
+
 import com.example.piao.fragment.HomeFragment;
 import com.example.piao.fragment.HotFragment;
 import com.example.piao.fragment.MyFragment;
@@ -67,6 +68,7 @@ public class MainActivity extends FragmentActivity {
 	private HomeFragment homeFragment;
 	private HotFragment hotFragment;
 	private MyFragment myFragment;
+	String name1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -74,10 +76,19 @@ public class MainActivity extends FragmentActivity {
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);// ȥ��������
 		setContentView(R.layout.main);
 		Bmob.initialize(this, APP_ID);
+
 		init();
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+	}
+
 	private void init() {
+		Intent intent = getIntent();
+		name1 = intent.getStringExtra("name");
 		drawerLayout = (DrawerLayout) findViewById(R.id.id_drawerlayout2);
 		drawerLayout.setDrawerListener(new DrawerListener() {
 			@Override
@@ -124,7 +135,10 @@ public class MainActivity extends FragmentActivity {
 				if (arg2 == 5) {
 					Intent intent = new Intent(MainActivity.this, AboutActivity.class);
 					startActivity(intent);
-
+				}
+				if (arg2 == 3) {
+					Intent intent = new Intent(MainActivity.this, StartActivity.class);
+					startActivity(intent);
 				}
 
 			}
@@ -141,6 +155,10 @@ public class MainActivity extends FragmentActivity {
 		fragments.add(homeFragment);
 		fragments.add(hotFragment);
 		fragments.add(myFragment);
+
+		Bundle bundle = new Bundle();
+		bundle.putString("get_name", name1);
+		homeFragment.setArguments(bundle);
 		initeCursor();
 		tv_host.setOnClickListener(new OnClickListener() {
 
